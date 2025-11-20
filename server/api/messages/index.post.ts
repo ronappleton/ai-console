@@ -48,12 +48,12 @@ export default defineEventHandler(async (event) => {
       .values(newMessage)
       .returning();
     
-    // Update the thread's last_message_at
+    // Update the thread's last_message_at and updated_at to match the message timestamp
     await db
       .update(threads)
       .set({ 
         lastMessageAt: createdMessage.createdAt,
-        updatedAt: new Date(),
+        updatedAt: createdMessage.createdAt,
       })
       .where(eq(threads.id, body.threadId));
     

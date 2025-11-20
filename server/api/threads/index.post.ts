@@ -50,7 +50,7 @@ export default defineEventHandler(async (event) => {
       id: threadId,
       projectId: body.projectId,
       title: body.title || 'New chat',
-      modeHint: body.modeHint || 'auto',
+      modeHint: body.modeHint || null,
       memarchExternalRef,
       isArchived: false,
       isPinned: false,

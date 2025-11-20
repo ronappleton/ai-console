@@ -1,6 +1,7 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
+import { fileURLToPath } from 'node:url';
 
 /**
  * Run database migrations
@@ -27,7 +28,7 @@ export async function runMigrations() {
 }
 
 // Allow running as a standalone script
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (fileURLToPath(import.meta.url) === process.argv[1]) {
   runMigrations()
     .then(() => {
       console.log('Migration script completed');
