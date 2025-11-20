@@ -1,5 +1,6 @@
 import { eq, asc } from 'drizzle-orm';
-import { messages } from '~/server/database/schema';
+import { messages } from '../../database/schema';
+import { useDB } from '../../utils/db';
 
 /**
  * GET /api/messages/:threadId

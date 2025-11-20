@@ -1,5 +1,6 @@
 import { eq } from 'drizzle-orm';
-import { threads, projects, type NewThread } from '~/server/database/schema';
+import { threads, projects, type NewThread } from '../../database/schema';
+import { useDB } from '../../utils/db';
 
 /**
  * POST /api/threads

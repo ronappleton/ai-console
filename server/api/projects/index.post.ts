@@ -1,4 +1,5 @@
-import { projects, type NewProject } from '~/server/database/schema';
+import { projects, type NewProject } from '../../database/schema';
+import { useDB } from '../../utils/db';
 
 /**
  * POST /api/projects
@@ -48,7 +49,9 @@ export default defineEventHandler(async (event) => {
     console.error('Error creating project:', error);
     
     // Handle unique constraint violation for slug
-    if (error.code === '23505' && error.constraint === 'projects_slug_unique') {
+    // postgres.js wraps the error in a cause property
+    const pgError = error.cause || error;
+    if (pgError.code === '23505' && pgError.constraint_name === 'projects_slug_unique') {
       throw createError({
         statusCode: 409,
         statusMessage: 'A project with this slug already exists',

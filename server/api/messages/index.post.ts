@@ -1,5 +1,6 @@
 import { eq } from 'drizzle-orm';
-import { messages, threads, type NewMessage } from '~/server/database/schema';
+import { messages, threads, type NewMessage } from '../../database/schema';
+import { useDB } from '../../utils/db';
 
 /**
  * POST /api/messages
@@ -64,7 +65,9 @@ export default defineEventHandler(async (event) => {
     console.error('Error creating message:', error);
     
     // Handle foreign key constraint violation
-    if (error.code === '23503') {
+    // postgres.js wraps the error in a cause property
+    const pgError = error.cause || error;
+    if (pgError.code === '23503') {
       throw createError({
         statusCode: 404,
         statusMessage: 'Thread not found',

@@ -1,5 +1,6 @@
 import { asc } from 'drizzle-orm';
-import { projects } from '~/server/database/schema';
+import { projects } from '../../database/schema';
+import { useDB } from '../../utils/db';
 
 /**
  * GET /api/projects

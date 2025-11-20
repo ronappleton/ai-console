@@ -1,10 +1,11 @@
-import { eq, desc } from 'drizzle-orm';
-import { threads } from '~/server/database/schema';
+import { eq, desc, sql } from 'drizzle-orm';
+import { threads } from '../../database/schema';
+import { useDB } from '../../utils/db';
 
 /**
  * GET /api/threads/:projectId
  * List all threads for a specific project
- * Ordered by last_message_at DESC (most recent first), then created_at DESC
+ * Ordered by last_message_at DESC NULLS LAST (most recent first), then created_at DESC
  */
 export default defineEventHandler(async (event) => {
   const db = useDB();
@@ -22,7 +23,10 @@ export default defineEventHandler(async (event) => {
       .select()
       .from(threads)
       .where(eq(threads.projectId, projectId))
-      .orderBy(desc(threads.lastMessageAt), desc(threads.createdAt));
+      .orderBy(
+        sql`${threads.lastMessageAt} DESC NULLS LAST`,
+        desc(threads.createdAt)
+      );
     
     return {
       success: true,
