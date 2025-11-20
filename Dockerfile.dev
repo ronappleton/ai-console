@@ -1,0 +1,21 @@
+# Dockerfile for development mode
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including devDependencies)
+# Note: If you encounter SSL certificate issues during build, add --build-arg NPM_STRICT_SSL=false
+ARG NPM_STRICT_SSL=true
+RUN if [ "$NPM_STRICT_SSL" = "false" ]; then npm config set strict-ssl false; fi && npm install
+
+# Copy application files
+COPY . .
+
+# Expose the development server port
+EXPOSE 3000
+
+# Start the development server with hot reload
+CMD ["npm", "run", "dev"]
