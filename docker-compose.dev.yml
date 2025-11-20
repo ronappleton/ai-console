@@ -1,0 +1,31 @@
+services:
+  ai-console-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        NPM_STRICT_SSL: "${NPM_STRICT_SSL:-true}"
+    container_name: ai-console-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0
+      - PORT=3000
+    volumes:
+      # Mount source code for hot reload
+      - ./app:/app/app
+      - ./public:/app/public
+      - ./nuxt.config.ts:/app/nuxt.config.ts
+      - ./tsconfig.json:/app/tsconfig.json
+      # Exclude node_modules and build outputs
+      - /app/node_modules
+      - /app/.nuxt
+      - /app/.output
+    restart: unless-stopped
+    networks:
+      - ai-console-network
+
+networks:
+  ai-console-network:
+    driver: bridge
