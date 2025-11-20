@@ -45,6 +45,9 @@ npm run db:generate
 # Run pending migrations
 npm run db:migrate
 
+# Seed database with sample data (for development)
+npm run db:seed
+
 # Open Drizzle Studio (database GUI)
 npm run db:studio
 ```

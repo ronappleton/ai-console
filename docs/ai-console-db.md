@@ -246,6 +246,9 @@ npm run db:generate
 # Run migrations
 npm run db:migrate
 
+# Seed the database with sample data (for development)
+npm run db:seed
+
 # Open Drizzle Studio (database GUI)
 npm run db:studio
 ```
@@ -282,7 +285,12 @@ Both configurations include:
    npm run db:migrate
    ```
 
-3. Start the application:
+3. (Optional) Seed the database with sample data:
+   ```bash
+   npm run db:seed
+   ```
+
+4. Start the application:
    ```bash
    npm run dev
    ```
