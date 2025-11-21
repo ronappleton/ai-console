@@ -1,4 +1,23 @@
 services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ai-console-postgres-dev
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ai_console
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data-dev:/var/lib/postgresql/data
+    networks:
+      - ai-console-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   ai-console-dev:
     build:
       context: .
@@ -12,19 +31,28 @@ services:
       - NODE_ENV=development
       - HOST=0.0.0.0
       - PORT=3000
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/ai_console
     volumes:
       # Mount source code for hot reload
       - ./app:/app/app
       - ./public:/app/public
+      - ./server:/app/server
       - ./nuxt.config.ts:/app/nuxt.config.ts
       - ./tsconfig.json:/app/tsconfig.json
+      - ./drizzle.config.ts:/app/drizzle.config.ts
       # Exclude node_modules and build outputs
       - /app/node_modules
       - /app/.nuxt
       - /app/.output
     restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - ai-console-network
+
+volumes:
+  postgres-data-dev:
 
 networks:
   ai-console-network:

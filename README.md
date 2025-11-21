@@ -10,8 +10,47 @@ A ChatGPT-like interface built with Nuxt 3 and Vue.js. This application features
 - 🎯 Project-based chat management
 - ⚙️ Settings button (UI ready for implementation)
 - 📱 Responsive and modern design
+- 🗄️ PostgreSQL database for persistent storage
+- 🔗 MemArch integration ready
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+
+## Database
+
+This project uses PostgreSQL with Drizzle ORM for data persistence. See [docs/ai-console-db.md](docs/ai-console-db.md) for detailed documentation.
+
+### Quick Start
+
+1. Copy the environment example:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Start PostgreSQL (via Docker Compose):
+   ```bash
+   docker compose -f docker-compose.dev.yml up -d postgres
+   ```
+
+3. Run database migrations:
+   ```bash
+   npm run db:migrate
+   ```
+
+### Database Commands
+
+```bash
+# Generate migrations after schema changes
+npm run db:generate
+
+# Run pending migrations
+npm run db:migrate
+
+# Seed database with sample data (for development)
+npm run db:seed
+
+# Open Drizzle Studio (database GUI)
+npm run db:studio
+```
 
 ## Setup
 
